@@ -1,8 +1,8 @@
 #!/bin/bash
 # Push file to sdcard
-ARG=$NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
-
-chk=$(echo ${ARG} |wc -w)
+ARG=$1
+adb connect 192.168.2.117:5555   #remove after status-check is implemented
+chk=$(echo $1 |wc -w)
 if [ ${chk} -ne 1 ]; then
     gdialog --title "Error" --msgbox "Only do one thing at a time, got ${chk}" 200 200
     exit 0
@@ -12,8 +12,9 @@ else
         gdialog --title "Adb not found" --msgbox "Adb binary is not found, please install adb" 200 200
         exit 1
     fi
-    gdialog --title "Finding device" --msgbox "Waiting for you device to become available to push $ARG, if not connected, do so now please." 200 200
-    adb wait-for-device
-    adb push $ARG /sdcard/
-    gdialog --title "Complete" --msgbox "$ARG pushed to sdcard" 200 200
+    gdialog --title "Finding device" --msgbox "Waiting for you device to become available to push $1, if not connected, do so now please." 200 200
+    adb connect 192.168.2.117:5555
+    #implement status-check here
+    adb push $1 /sdcard/
+    gdialog --title "Complete" --msgbox "$1 pushed to sdcard" 200 200
 fi
